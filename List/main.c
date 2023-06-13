@@ -90,7 +90,7 @@ int GetLinkStringLength(LinkString linkString) {
     return length;
 }
 
-// 6、获取链串中指定位置的元素
+// 6、获取链串中指定下标的元素
 char GetLinkStringElement(LinkString linkString, int index) {
     int i = 0;
     LinkString p = linkString->next;
@@ -118,7 +118,7 @@ int GetLinkStringIndex(LinkString linkString, char element) {
     return -1;
 }
 
-// 8、在链串的指定位置插入元素
+// 8、在链串的指定位置插入元素 从0开始 0表示在第一个元素前插入 1表示在第一个元素后插入
 void InsertLinkStringElement(LinkString linkString, int index, char element) {
     int i = 0;
     LinkString p = linkString;
@@ -172,7 +172,7 @@ void TraverseLinkString(LinkString linkString) {
     printf("\n");
 }
 
-// 12、链串的复制
+// 12、链串的复制 用一个新的链串来存储原链串的数据
 void CopyLinkString(LinkString linkString, LinkString *copyLinkString) {
     InitLinkString(copyLinkString);
     LinkString p = linkString->next;
@@ -211,7 +211,7 @@ void ConcatLinkString(LinkString linkString1, LinkString linkString2, LinkString
     }
 }
 
-// 14、链串的比较
+// 14、链串内容的比较
 int CompareLinkString(LinkString linkString1, LinkString linkString2) {
     LinkString p = linkString1->next;
     LinkString q = linkString2->next;
@@ -222,7 +222,13 @@ int CompareLinkString(LinkString linkString1, LinkString linkString2) {
         p = p->next;
         q = q->next;
     }
-    return GetLinkStringLength(linkString1) - GetLinkStringLength(linkString2);
+    if (p) {
+        return 1;
+    }
+    if (q) {
+        return -1;
+    }
+    return 0;
 }
 
 // 15、链串的截取,从指定位置开始截取指定长度的子串,并返回子串
@@ -247,7 +253,7 @@ void SubLinkString(LinkString linkString, int index, int length, LinkString *sub
     }
 }
 
-// 16、链串的查找
+// 16、链串的查找 查找findLinkString在linkString中第一次出现的位置 如果没有找到返回-1
 int IndexLinkString(LinkString linkString, LinkString findLinkString) {
     LinkString p = linkString->next;
     LinkString q = findLinkString->next;
@@ -270,34 +276,35 @@ int IndexLinkString(LinkString linkString, LinkString findLinkString) {
     return -1;
 }
 
-// 17、链串的替换 将链串中的findLinkString替换为replaceLinkString
-void ReplaceLinkString(LinkString linkString, LinkString findLinkString, LinkString replaceLinkString) {
-    LinkString p = linkString->next;
-    LinkString q = findLinkString->next;
-    LinkString r = replaceLinkString->next;
-    while (p) {
-        if (p->data == q->data) {
-            LinkString s = p;
-            LinkString t = q;
-            while (s && t && s->data == t->data) {
-                s = s->next;
-                t = t->next;
-            }
-            if (!t) {
-                LinkString u = p;
-                LinkString v = r;
-                while (u && v) {
-                    u->data = v->data;
-                    u = u->next;
-                    v = v->next;
-                }
-            }
-        }
+// 17、链串的替换 将链串1中指定的长度替换成输入的链串 替换的位置是从start开始的长度为length的子串
+void ReplaceLinkString(LinkString linkString, int start, int length, LinkString replaceLinkString) {
+    LinkString p = linkString;
+    int i = 0;
+    while (p && i < start) {
+        i++;
         p = p->next;
+    }
+    if (p) {
+        LinkString q = replaceLinkString->next;
+        while (q) {
+            LinkString r = (LinkString) malloc(sizeof(Node));
+            r->data = q->data;
+            r->next = p->next;
+            p->next = r;
+            p = r;
+            q = q->next;
+        }
+        i = 0;
+        while (p && i < length) {
+            LinkString q = p->next;
+            p->next = q->next;
+            free(q);
+            i++;
+        }
     }
 }
 
-// 18、链串的插入
+// 18、链串的插入 将insertLinkString插入到linkString的start位置
 void InsertLinkString(LinkString linkString, int start, LinkString insertLinkString) {
     LinkString p = linkString;
     int i = 0;
@@ -318,7 +325,7 @@ void InsertLinkString(LinkString linkString, int start, LinkString insertLinkStr
     }
 }
 
-// 19、链串的删除
+// 19、链串的删除 从start位置开始删除length个字符
 void DeleteLinkString(LinkString linkString, int start, int length) {
     LinkString p = linkString;
     int i = 0;
@@ -339,7 +346,7 @@ void DeleteLinkString(LinkString linkString, int start, int length) {
     }
 }
 
-// 20、链串的反转
+// 20、链串的反转 将链串反转
 void ReverseLinkString(LinkString linkString) {
     LinkString p = linkString->next;
     LinkString q = NULL;
@@ -352,7 +359,7 @@ void ReverseLinkString(LinkString linkString) {
     linkString->next = q;
 }
 
-// 21、链串的排序
+// 21、链串的排序 将链串中的字符按照ASCII码从小到大排序
 void SortLinkString(LinkString linkString) {
     LinkString p = linkString->next;
     while (p) {
@@ -390,7 +397,7 @@ void DeduplicateLinkString(LinkString linkString) {
     }
 }
 
-// 23、链串的合并
+// 23、链串的合并 将两个有序链串合并为一个有序链串
 void MergeLinkString(LinkString linkString1, LinkString linkString2, LinkString *mergeLinkString) {
     InitLinkString(mergeLinkString);
     LinkString p = linkString1->next;
@@ -427,12 +434,12 @@ void MergeLinkString(LinkString linkString1, LinkString linkString2, LinkString 
     }
 }
 
-// 24、链串的交集 两个链串的交集是指由两个链串中共同元素组成的链串
-void IntersectionLinkString(LinkString linkString1, LinkString linkString2, LinkString *intersectionLinkString) {
-    InitLinkString(intersectionLinkString);
+// 24、链串的交集 返回两个链串的交集
+void IntersectLinkString(LinkString linkString1, LinkString linkString2, LinkString *intersectLinkString) {
+    InitLinkString(intersectLinkString);
     LinkString p = linkString1->next;
     LinkString q = linkString2->next;
-    LinkString r = *intersectionLinkString;
+    LinkString r = *intersectLinkString;
     while (p && q) {
         if (p->data < q->data) {
             p = p->next;
@@ -450,7 +457,7 @@ void IntersectionLinkString(LinkString linkString1, LinkString linkString2, Link
     }
 }
 
-// 25、链串的并集
+// 25、链串的并集 返回两个链串的并集 两个链串中的字符不重复
 void UnionLinkString(LinkString linkString1, LinkString linkString2, LinkString *unionLinkString) {
     InitLinkString(unionLinkString);
     LinkString p = linkString1->next;
@@ -491,7 +498,7 @@ void UnionLinkString(LinkString linkString1, LinkString linkString2, LinkString 
     }
 }
 
-// 26、链串的差集
+// 26、链串的差集 返回两个链串的差集 两个链串中的字符不重复 两个链串中的字符按照ASCII码从小到大排序
 void DifferenceLinkString(LinkString linkString1, LinkString linkString2, LinkString *differenceLinkString) {
     InitLinkString(differenceLinkString);
     LinkString p = linkString1->next;
@@ -618,21 +625,23 @@ void CreateLinkString(LinkString *pNode) {
     InitLinkString(pNode);
     LinkString r = *pNode;
     char c;
-    char append[100];
+    //char append[100];
     while ((c = getchar()) != '\n') {
 
         LinkString s = (LinkString) malloc(sizeof(Node));
 
         // 输入的C不上逗号或空格，就把输入的c拼接成一个字符串
         if (c != ',' && c != ' ' && c != "，") {
-            strcat(append, &c);
+            //strcat(append, &c);
+            //TODO 拼接字符串
+            s->data = c;
+            s->next = NULL;
+            r->next = s;
+            r = s;
         } else {
             continue;
         }
-        s->data = c;
-        s->next = NULL;
-        r->next = s;
-        r = s;
+
     }
 
 }
@@ -641,7 +650,7 @@ void CreateLinkString(LinkString *pNode) {
 void PrintLinkString(LinkString linkString) {
     LinkString p = linkString->next;
     while (p) {
-        printf("%c", p->data);
+        printf("%c,", p->data);
         p = p->next;
     }
     printf("\n");
@@ -706,6 +715,7 @@ int main() {
         scanf("%d", &choice);
 
         int index;
+        LinkString linkString3;
         switch (choice) {
             case 1:
                 // 1、初始化链串
@@ -749,46 +759,52 @@ int main() {
                 getchar();
                 break;
             case 6:
-                // 6、获取链串中指定位置的元素
-                printf("请输入要获取元素的位置：");
+                // 6、获取链串中指定下标的元素
+                printf("请输入要获取元素的下标：");
                 scanf("%d", &index);
-                char e;
-                if (GetLinkStringElement(linkString1, index)) {
-                    printf("链串1中第%d个元素为：%c\n", index, e);
-                } else {
-                    printf("获取元素失败！\n");
-                }
-                if (GetLinkStringElement(linkString2, index)) {
-                    printf("链串2中第%d个元素为：%c\n", index, e);
-                } else {
-                    printf("获取元素失败！\n");
-                }
+
+                printf("链串1中下标为%d的元素为：%c\n", index, GetLinkStringElement(linkString1, index));
+                printf("链串2中下标为%d的元素为：%c\n", index, GetLinkStringElement(linkString2, index));
+
                 getchar();
                 break;
             case 7:
                 // 7、获取链串中指定元素的位置
                 printf("请输入要获取元素的位置：");
-                scanf("%d", &index);
-                if (GetLinkStringIndex(linkString1, 'a')) {
-                    printf("链串1中元素a的位置为：%d\n", index);
-                } else {
+                char element;
+                int index;
+                scanf("%d", &element);
+                index = GetLinkStringIndex(linkString1, element);
+                if (index == -1) {
                     printf("获取元素失败！\n");
+                } else {
+                    printf("链串1中元素的位置为：%d\n", index);
                 }
-                if (GetLinkStringIndex(linkString2, 'a')) {
-                    printf("链串2中元素a的位置为：%d\n", index);
-                } else {
+
+                index = GetLinkStringIndex(linkString2, element);
+                if (index == -1) {
                     printf("获取元素失败！\n");
+                } else {
+                    printf("链串2中元素a的位置为：%d\n", index);
                 }
                 getchar();
                 break;
             case 8:
                 // 8、在链串的指定位置插入元素
+                printf("从0开始 0表示在第一个元素前插入 1表示在第一个元素后插入\n");
                 printf("请输入要插入元素的位置：");
                 scanf("%d", &index);
-                InsertLinkStringElement(linkString1, index, 'a');
-                printf("链串1中插入元素成功！\n");
-                InsertLinkStringElement(linkString2, index, 'a');
-                printf("链串2中插入元素成功！\n");
+                getchar();
+                printf("请输入要插入的元素：");
+                scanf("%c", &element);
+                InsertLinkStringElement(linkString1, index, element);
+                printf("链串1中插入元素成功！插入后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
+                InsertLinkStringElement(linkString2, index, element);
+                printf("链串2中插入元素成功！插入后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString2);
                 getchar();
                 break;
             case 9:
@@ -796,19 +812,30 @@ int main() {
                 printf("请输入要删除元素的位置：");
                 scanf("%d", &index);
                 DeleteLinkStringElement(linkString1, index);
-                printf("链串1中删除元素成功！\n");
+                printf("链串1中删除元素成功！删除后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
                 DeleteLinkStringElement(linkString2, index);
-                printf("链串2中删除元素成功！\n");
+                printf("链串2中删除元素成功！删除后的链串为：\n");
+                // 打印链串
+                PrintLinkString(linkString2);
                 getchar();
                 break;
             case 10:
                 // 10、在链串的指定位置替换元素
                 printf("请输入要替换元素的位置：");
                 scanf("%d", &index);
-                ReplaceLinkStringElement(linkString1, index, 'a');
-                printf("链串1中替换元素成功！\n");
-                ReplaceLinkStringElement(linkString2, index, 'a');
-                printf("链串2中替换元素成功！\n");
+                getchar();
+                printf("请输入要替换的元素：");
+                scanf("%c", &element);
+                ReplaceLinkStringElement(linkString1, index, element);
+                printf("链串1中替换元素成功！替换后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
+                ReplaceLinkStringElement(linkString2, index, element);
+                printf("链串2中替换元素成功！替换后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString2);
                 getchar();
                 break;
             case 11:
@@ -819,25 +846,23 @@ int main() {
                 break;
             case 12:
                 // 12、链串的复制
-            {
-                LinkString linkString3;
-                CopyLinkString(linkString3, &linkString1);
-            }
-                printf("链串1已复制到链串3！\n");
+                CopyLinkString(linkString1, &linkString3);
+                printf("链串1已复制到链串3！链串3为：\n");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 13:
                 // 13、链串的连接
-            {
-                LinkString linkString3;
                 ConcatLinkString(linkString1, linkString2, &linkString3);
-            }
-                printf("链串1已连接到链串2！\n");
+                printf("链串1已连接到链串2！连接后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 14:
                 // 14、链串的比较
-                if (CompareLinkString(linkString1, linkString2)) {
+                if (!CompareLinkString(linkString1, linkString2)) {
                     printf("链串1与链串2相等！\n");
                 } else {
                     printf("链串1与链串2不相等！\n");
@@ -846,113 +871,161 @@ int main() {
                 break;
             case 15:
                 // 15、链串的截取
-                SubLinkString(linkString1, 1, 3, &linkString2);
-                printf("链串1已截取！\n");
+                printf("请输入要截取的链串的起始位置和长度：");
+                int start, length;
+                scanf("%d %d", &start, &length);
+                SubLinkString(linkString1, start, length, &linkString3);
+                printf("链串1已截取！截取后的链串为：\n");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 16:
                 // 16、链串的查找
-                if (IndexLinkString(linkString1, linkString2)) {
-                    printf("链串2是链串1的子串！\n");
+                printf("请输入要在链串1查找的链串：");
+                getchar();
+                CreateLinkString(&linkString3);
+                if (!IndexLinkString(linkString1, linkString3)) {
+                    printf("是链串1的子串！\n");
                 } else {
-                    printf("链串2不是链串1的子串！\n");
+                    printf("不是链串1的子串！\n");
                 }
                 getchar();
                 break;
             case 17:
                 // 17、链串的替换
-            {
-                LinkString linkString3;
-                ReplaceLinkString(linkString1, linkString2, linkString3);
-            }
-                printf("链串1已替换为链串2！\n");
+                printf("请输入要替换的链串：");
+                getchar();
+                CreateLinkString(&linkString3);
+                printf("请输入要替换链串1子串的位置和长度：");
+                scanf("%d %d", &start, &length);
+                ReplaceLinkString(linkString1,start, length,linkString3);
+                printf("链串1已替换！替换后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
                 getchar();
                 break;
             case 18:
                 // 18、链串的插入
-                InsertLinkString(linkString1, 1, linkString2);
-                printf("链串2已插入到链串1！\n");
+                printf("请输入要插入的链串：");
+                getchar();
+                CreateLinkString(&linkString3);
+                printf("请输入要插入链串1的位置：");
+                scanf("%d", &index);
+                InsertLinkString(linkString1, index, linkString3);
+                printf("已插入到链串1！插入后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
                 getchar();
                 break;
             case 19:
                 // 19、链串的删除
-                DeleteLinkString(linkString1, 1, 3);
-                printf("链串1已删除！\n");
+                printf("请输入要删除的链串的位置和长度：");
+                scanf("%d %d", &index, &length);
+                DeleteLinkString(linkString1, index, length);
+                printf("链串1已删除指定片段！删除后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
                 getchar();
                 break;
             case 20:
                 // 20、链串的反转
                 ReverseLinkString(linkString1);
-                printf("链串1已反转！\n");
+                printf("链串1已反转！反转后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
+                ReverseLinkString(linkString2);
+                printf("链串2已反转！反转后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString2);
                 getchar();
                 break;
             case 21:
                 // 21、链串的排序
                 SortLinkString(linkString1);
-                printf("链串1已排序！\n");
+                printf("链串1已排序！排序后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
+                SortLinkString(linkString2);
+                printf("链串2已排序！排序后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString2);
                 getchar();
                 break;
             case 22:
                 // 22、链串的去重
                 DeduplicateLinkString(linkString1);
-                printf("链串1已去重！\n");
+                printf("链串1已去重！去重后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString1);
+                DeduplicateLinkString(linkString2);
+                printf("链串2已去重！去重后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString2);
                 getchar();
                 break;
             case 23:
                 // 23、链串的合并
-            {
-                LinkString linkString3 = NULL;
                 MergeLinkString(linkString1, linkString2, &linkString3);
-            }
-                printf("链串1已合并！\n");
+                printf("链串1链串2已合并！合并后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 24:
                 // 24、链串的交集
-            {
-                LinkString linkString3 = NULL;
-                IntersectionLinkString(linkString1, linkString2, &linkString3);
-            }
-                printf("链串1已交集！\n");
+                IntersectLinkString(linkString1, linkString2, &linkString3);
+                if (linkString3 == NULL) {
+                    printf("链串1和链串2没有交集！\n");
+                    getchar();
+                    break;
+                }
+                printf("链串1和链串2交集后的链串为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 25:
                 // 25、链串的并集
-            {
-                LinkString linkString3 = NULL;
                 UnionLinkString(linkString1, linkString2, &linkString3);
-            }
-                printf("链串1已并集！\n");
+                printf("链串1与链串2的并集为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 26:
                 // 26、链串的差集
-            {
-                LinkString linkString3 = NULL;
                 DifferenceLinkString(linkString1, linkString2, &linkString3);
-            }
-                printf("链串1已差集！\n");
+                printf("链串1与链串2的差集为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 27:
-                // 27、链串的对称差
-            {
-                LinkString linkString3 = NULL;
                 SymmetricDifferenceLinkString(linkString1, linkString2, &linkString3);
-            }
-                printf("链串1已对称差！\n");
+                printf("链串1与链串2的对称差集为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 28:
                 // 28、链串的子串
-                SubStringLinkString(linkString1, 1, 3, &linkString2);
-                printf("链串1已截取！\n");
+                printf("请输入要截取的链串1的位置和长度：");
+                scanf("%d %d", &index, &length);
+                SubStringLinkString(linkString1, index, length, &linkString3);
+                printf("链串1的子串为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 29:
                 // 29、链串的子序列
-                SubSequenceLinkString(linkString1, 1, 3, &linkString2);
-                printf("链串2是链串1的子序列！\n");
+                printf("请输入要截取的链串1的位置和长度：");
+                scanf("%d %d", &index, &length);
+                SubSequenceLinkString(linkString1, index, length, &linkString3);
+                printf("链串1的子序列为：");
+                // 打印链串
+                PrintLinkString(linkString3);
                 getchar();
                 break;
             case 0:
