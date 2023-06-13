@@ -1,13 +1,17 @@
-"C:\Program Files (x86)\JetBrains\CLion 2023.1.2\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files (x86)/JetBrains/CLion 2023.1.2/bin/ninja/win/x64/ninja.exe" -G Ninja -S C:\code\Cproject\List -B C:\code\Cproject\List\cmake-build-debug
--- The C compiler identification is GNU 13.1.0
+"D:\soft\CLion 2023.1.3\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S D:\code\Cproject\List -B D:\code\Cproject\List\cmake-build-debug
+-- The C compiler identification is GNU 11.2.0
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
--- Check for working C compiler: C:/msys64/mingw64/bin/cc.exe - skipped
+-- Check for working C compiler: D:/soft/CLion 2023.1.3/bin/mingw/bin/gcc.exe - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Found PkgConfig: C:/msys64/mingw64/bin/pkg-config.exe (found version "1.8.0") 
--- Checking for module 'gtk+-3.0'
---   Found gtk+-3.0, version 3.24.38
--- Configuring done
--- Generating done
--- Build files have been written to: C:/code/Cproject/List/cmake-build-debug
+CMake Error at D:/soft/CLion 2023.1.3/bin/cmake/win/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake:230 (message):
+  Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE)
+Call Stack (most recent call first):
+  D:/soft/CLion 2023.1.3/bin/cmake/win/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake:600 (_FPHSA_FAILURE_MESSAGE)
+  D:/soft/CLion 2023.1.3/bin/cmake/win/x64/share/cmake-3.25/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  CMakeLists.txt:8 (FIND_PACKAGE)
+
+
+-- Configuring incomplete, errors occurred!
+See also "D:/code/Cproject/List/cmake-build-debug/CMakeFiles/CMakeOutput.log".

@@ -4,8 +4,7 @@
 
 #include <stdio.h>
 #include <malloc.h>
-#include <gtk/gtk.h>
-
+#include <string.h>
 
 /*
  链串的基本操作的实现
@@ -42,7 +41,7 @@
 
 // 定义链串的数据类型
 typedef struct Node {
-    char data;
+    int data;
     struct Node *next;
 } Node, *LinkString;
 
@@ -619,8 +618,17 @@ void CreateLinkString(LinkString *pNode) {
     InitLinkString(pNode);
     LinkString r = *pNode;
     char c;
+    char append[100];
     while ((c = getchar()) != '\n') {
+
         LinkString s = (LinkString) malloc(sizeof(Node));
+
+        // 输入的C不上逗号或空格，就把输入的c拼接成一个字符串
+        if (c != ',' && c != ' ' && c != "，") {
+            strcat(append, &c);
+        } else {
+            continue;
+        }
         s->data = c;
         s->next = NULL;
         r->next = s;
@@ -653,8 +661,8 @@ int main() {
 
     while (1) {
 
-        LinkString linkString1;
-        LinkString linkString2;
+        LinkString linkString1 = NULL;
+        LinkString linkString2 = NULL;
         // 创建链串
         printf("请输入你要操作的链串：\n");
         printf("请输入链串1：");
@@ -704,18 +712,21 @@ int main() {
                 InitLinkString(&linkString1);
                 InitLinkString(&linkString2);
                 printf("链串已初始化！\n");
+                getchar();
                 break;
             case 2:
                 // 2、销毁链串
                 DestroyLinkString(&linkString1);
                 DestroyLinkString(&linkString2);
                 printf("链串已销毁！\n");
+                getchar();
                 break;
             case 3:
                 // 3、清空链串
                 ClearLinkString(linkString1);
                 ClearLinkString(linkString2);
                 printf("链串已清空！\n");
+                getchar();
                 break;
             case 4:
                 // 4、判断链串是否为空
@@ -729,11 +740,13 @@ int main() {
                 } else {
                     printf("链串2不为空！\n");
                 }
+                getchar();
                 break;
             case 5:
                 // 5、获取链串的长度
                 printf("链串1的长度为：%d\n", GetLinkStringLength(linkString1));
                 printf("链串2的长度为：%d\n", GetLinkStringLength(linkString2));
+                getchar();
                 break;
             case 6:
                 // 6、获取链串中指定位置的元素
@@ -750,6 +763,7 @@ int main() {
                 } else {
                     printf("获取元素失败！\n");
                 }
+                getchar();
                 break;
             case 7:
                 // 7、获取链串中指定元素的位置
@@ -765,6 +779,7 @@ int main() {
                 } else {
                     printf("获取元素失败！\n");
                 }
+                getchar();
                 break;
             case 8:
                 // 8、在链串的指定位置插入元素
@@ -774,6 +789,7 @@ int main() {
                 printf("链串1中插入元素成功！\n");
                 InsertLinkStringElement(linkString2, index, 'a');
                 printf("链串2中插入元素成功！\n");
+                getchar();
                 break;
             case 9:
                 // 9、在链串的指定位置删除元素
@@ -783,6 +799,7 @@ int main() {
                 printf("链串1中删除元素成功！\n");
                 DeleteLinkStringElement(linkString2, index);
                 printf("链串2中删除元素成功！\n");
+                getchar();
                 break;
             case 10:
                 // 10、在链串的指定位置替换元素
@@ -792,11 +809,13 @@ int main() {
                 printf("链串1中替换元素成功！\n");
                 ReplaceLinkStringElement(linkString2, index, 'a');
                 printf("链串2中替换元素成功！\n");
+                getchar();
                 break;
             case 11:
                 // 11、遍历链串
                 TraverseLinkString(linkString1);
                 TraverseLinkString(linkString2);
+                getchar();
                 break;
             case 12:
                 // 12、链串的复制
@@ -805,14 +824,16 @@ int main() {
                 CopyLinkString(linkString3, &linkString1);
             }
                 printf("链串1已复制到链串3！\n");
+                getchar();
                 break;
             case 13:
                 // 13、链串的连接
             {
-                LinkString linkString3 = g_nullify_pointer;
+                LinkString linkString3;
                 ConcatLinkString(linkString1, linkString2, &linkString3);
             }
                 printf("链串1已连接到链串2！\n");
+                getchar();
                 break;
             case 14:
                 // 14、链串的比较
@@ -821,11 +842,13 @@ int main() {
                 } else {
                     printf("链串1与链串2不相等！\n");
                 }
+                getchar();
                 break;
             case 15:
                 // 15、链串的截取
                 SubLinkString(linkString1, 1, 3, &linkString2);
                 printf("链串1已截取！\n");
+                getchar();
                 break;
             case 16:
                 // 16、链串的查找
@@ -834,6 +857,7 @@ int main() {
                 } else {
                     printf("链串2不是链串1的子串！\n");
                 }
+                getchar();
                 break;
             case 17:
                 // 17、链串的替换
@@ -842,31 +866,37 @@ int main() {
                 ReplaceLinkString(linkString1, linkString2, linkString3);
             }
                 printf("链串1已替换为链串2！\n");
+                getchar();
                 break;
             case 18:
                 // 18、链串的插入
                 InsertLinkString(linkString1, 1, linkString2);
                 printf("链串2已插入到链串1！\n");
+                getchar();
                 break;
             case 19:
                 // 19、链串的删除
                 DeleteLinkString(linkString1, 1, 3);
                 printf("链串1已删除！\n");
+                getchar();
                 break;
             case 20:
                 // 20、链串的反转
                 ReverseLinkString(linkString1);
                 printf("链串1已反转！\n");
+                getchar();
                 break;
             case 21:
                 // 21、链串的排序
                 SortLinkString(linkString1);
                 printf("链串1已排序！\n");
+                getchar();
                 break;
             case 22:
                 // 22、链串的去重
                 DeduplicateLinkString(linkString1);
                 printf("链串1已去重！\n");
+                getchar();
                 break;
             case 23:
                 // 23、链串的合并
@@ -875,6 +905,7 @@ int main() {
                 MergeLinkString(linkString1, linkString2, &linkString3);
             }
                 printf("链串1已合并！\n");
+                getchar();
                 break;
             case 24:
                 // 24、链串的交集
@@ -883,6 +914,7 @@ int main() {
                 IntersectionLinkString(linkString1, linkString2, &linkString3);
             }
                 printf("链串1已交集！\n");
+                getchar();
                 break;
             case 25:
                 // 25、链串的并集
@@ -891,6 +923,7 @@ int main() {
                 UnionLinkString(linkString1, linkString2, &linkString3);
             }
                 printf("链串1已并集！\n");
+                getchar();
                 break;
             case 26:
                 // 26、链串的差集
@@ -899,6 +932,7 @@ int main() {
                 DifferenceLinkString(linkString1, linkString2, &linkString3);
             }
                 printf("链串1已差集！\n");
+                getchar();
                 break;
             case 27:
                 // 27、链串的对称差
@@ -907,20 +941,25 @@ int main() {
                 SymmetricDifferenceLinkString(linkString1, linkString2, &linkString3);
             }
                 printf("链串1已对称差！\n");
+                getchar();
                 break;
             case 28:
                 // 28、链串的子串
                 SubStringLinkString(linkString1, 1, 3, &linkString2);
                 printf("链串1已截取！\n");
+                getchar();
                 break;
             case 29:
                 // 29、链串的子序列
                 SubSequenceLinkString(linkString1, 1, 3, &linkString2);
                 printf("链串2是链串1的子序列！\n");
+                getchar();
                 break;
             case 0:
                 // 0、退出
                 printf("欢迎下次再使用本系统！\n");
+                Exit();
+                getchar();
                 break;
             default:
                 printf("输入有误，请重新输入！\n");
