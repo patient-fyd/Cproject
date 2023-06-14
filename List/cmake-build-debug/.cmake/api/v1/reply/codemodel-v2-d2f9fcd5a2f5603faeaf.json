@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/code/Cproject/List/cmake-build-debug",
-		"source" : "C:/code/Cproject/List"
+		"build" : "D:/code/Cproject/List/cmake-build-debug",
+		"source" : "D:/code/Cproject/List"
 	},
 	"version" : 
 	{
