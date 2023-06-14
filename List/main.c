@@ -253,10 +253,10 @@ void SubLinkString(LinkString linkString, int index, int length, LinkString *sub
     }
 }
 
-// 16、链串的查找 查找findLinkString在linkString中第一次出现的位置 如果没有找到返回-1
-int IndexLinkString(LinkString linkString, LinkString findLinkString) {
+// 16、链串的查找 判断输入的链串是否是原链串的子串 如果是 返回子串的位置 否则返回-1
+int IndexLinkString(LinkString linkString, LinkString subLinkString) {
     LinkString p = linkString->next;
-    LinkString q = findLinkString->next;
+    LinkString q = subLinkString->next;
     int index = 0;
     while (p) {
         if (p->data == q->data) {
@@ -669,15 +669,8 @@ int main() {
 
 
     while (1) {
-
         LinkString linkString1 = NULL;
         LinkString linkString2 = NULL;
-        // 创建链串
-        printf("请输入你要操作的链串：\n");
-        printf("请输入链串1：");
-        CreateLinkString(&linkString1);
-        printf("请输入链串2：");
-        CreateLinkString(&linkString2);
 
         // 选择操作
         int choice;
@@ -718,57 +711,61 @@ int main() {
         LinkString linkString3;
         switch (choice) {
             case 1:
+                // 创建链串
+                printf("请输入你要初始化的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 1、初始化链串
                 InitLinkString(&linkString1);
-                InitLinkString(&linkString2);
                 printf("链串已初始化！\n");
-                getchar();
-                break;
+                goto again;
             case 2:
+                printf("请输入你要销毁的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 2、销毁链串
                 DestroyLinkString(&linkString1);
-                DestroyLinkString(&linkString2);
                 printf("链串已销毁！\n");
-                getchar();
-                break;
+                goto again;
             case 3:
+                printf("请输入你要清空的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 3、清空链串
                 ClearLinkString(linkString1);
-                ClearLinkString(linkString2);
                 printf("链串已清空！\n");
-                getchar();
-                break;
+                goto again;
             case 4:
+                printf("请输入你要判断是否为空的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 4、判断链串是否为空
                 if (IsEmptyLinkString(linkString1)) {
                     printf("链串1为空！\n");
                 } else {
                     printf("链串1不为空！\n");
                 }
-                if (IsEmptyLinkString(linkString2)) {
-                    printf("链串2为空！\n");
-                } else {
-                    printf("链串2不为空！\n");
-                }
-                getchar();
-                break;
+                goto again;
             case 5:
+                printf("请输入你要获取长度的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 5、获取链串的长度
                 printf("链串1的长度为：%d\n", GetLinkStringLength(linkString1));
-                printf("链串2的长度为：%d\n", GetLinkStringLength(linkString2));
-                getchar();
-                break;
+                goto again;
             case 6:
+                printf("请输入你要获取元素的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 6、获取链串中指定下标的元素
                 printf("请输入要获取元素的下标：");
                 scanf("%d", &index);
-
                 printf("链串1中下标为%d的元素为：%c\n", index, GetLinkStringElement(linkString1, index));
-                printf("链串2中下标为%d的元素为：%c\n", index, GetLinkStringElement(linkString2, index));
-
-                getchar();
-                break;
+                goto again;
             case 7:
+                printf("请输入你要获取元素的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 7、获取链串中指定元素的位置
                 printf("请输入要获取元素的位置：");
                 char element;
@@ -780,16 +777,11 @@ int main() {
                 } else {
                     printf("链串1中元素的位置为：%d\n", index);
                 }
-
-                index = GetLinkStringIndex(linkString2, element);
-                if (index == -1) {
-                    printf("获取元素失败！\n");
-                } else {
-                    printf("链串2中元素a的位置为：%d\n", index);
-                }
-                getchar();
-                break;
+                goto again;
             case 8:
+                printf("请输入你要插入元素的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 8、在链串的指定位置插入元素
                 printf("从0开始 0表示在第一个元素前插入 1表示在第一个元素后插入\n");
                 printf("请输入要插入元素的位置：");
@@ -801,13 +793,11 @@ int main() {
                 printf("链串1中插入元素成功！插入后的链串为：");
                 // 打印链串
                 PrintLinkString(linkString1);
-                InsertLinkStringElement(linkString2, index, element);
-                printf("链串2中插入元素成功！插入后的链串为：");
-                // 打印链串
-                PrintLinkString(linkString2);
-                getchar();
-                break;
+                goto again;
             case 9:
+                printf("请输入你要删除元素的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 9、在链串的指定位置删除元素
                 printf("请输入要删除元素的位置：");
                 scanf("%d", &index);
@@ -815,13 +805,11 @@ int main() {
                 printf("链串1中删除元素成功！删除后的链串为：");
                 // 打印链串
                 PrintLinkString(linkString1);
-                DeleteLinkStringElement(linkString2, index);
-                printf("链串2中删除元素成功！删除后的链串为：\n");
-                // 打印链串
-                PrintLinkString(linkString2);
-                getchar();
-                break;
+                goto again;
             case 10:
+                printf("请输入你要替换元素的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 10、在链串的指定位置替换元素
                 printf("请输入要替换元素的位置：");
                 scanf("%d", &index);
@@ -832,44 +820,54 @@ int main() {
                 printf("链串1中替换元素成功！替换后的链串为：");
                 // 打印链串
                 PrintLinkString(linkString1);
-                ReplaceLinkStringElement(linkString2, index, element);
-                printf("链串2中替换元素成功！替换后的链串为：");
-                // 打印链串
-                PrintLinkString(linkString2);
-                getchar();
-                break;
+                goto again;
             case 11:
+                printf("请输入你要遍历的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 11、遍历链串
                 TraverseLinkString(linkString1);
-                TraverseLinkString(linkString2);
-                getchar();
-                break;
+                goto again;
             case 12:
+                printf("请输入你要复制的链串：\n");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 12、链串的复制
                 CopyLinkString(linkString1, &linkString3);
                 printf("链串1已复制到链串3！链串3为：\n");
                 // 打印链串
                 PrintLinkString(linkString3);
-                getchar();
-                break;
+                goto again;
             case 13:
+                printf("请输入你要连接的两个链串：\n");
+                printf("请输入链串1：");
+                getchar();
+                CreateLinkString(&linkString1);
+                printf("请输入链串2：");
+                getchar();
+                CreateLinkString(&linkString2);
                 // 13、链串的连接
                 ConcatLinkString(linkString1, linkString2, &linkString3);
                 printf("链串1已连接到链串2！连接后的链串为：");
                 // 打印链串
                 PrintLinkString(linkString3);
-                getchar();
-                break;
+                goto again;
             case 14:
+                printf("请输入你要比较的两个链串：\n");
+                printf("请输入链串1：");
+                CreateLinkString(&linkString1);
+                printf("请输入链串2：");
+                CreateLinkString(&linkString2);
                 // 14、链串的比较
                 if (!CompareLinkString(linkString1, linkString2)) {
                     printf("链串1与链串2相等！\n");
                 } else {
                     printf("链串1与链串2不相等！\n");
                 }
-                getchar();
-                break;
+                goto again;
             case 15:
+                printf("请输入你要截取的链串：\n");
+                CreateLinkString(&linkString1);
                 // 15、链串的截取
                 printf("请输入要截取的链串的起始位置和长度：");
                 int start, length;
@@ -881,29 +879,35 @@ int main() {
                 getchar();
                 break;
             case 16:
+                printf("请输入你要被查找链串：");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 16、链串的查找
-                printf("请输入要在链串1查找的链串：");
+                printf("请输入要在链串查找的子串：");
                 getchar();
                 CreateLinkString(&linkString3);
-                if (!IndexLinkString(linkString1, linkString3)) {
-                    printf("是链串1的子串！\n");
+                if (IndexLinkString(linkString1, linkString3) == -1) {
+                    printf("不是链串的子串！\n");
                 } else {
-                    printf("不是链串1的子串！\n");
+                    printf("是链串的子串！\n");
                 }
-                getchar();
-                break;
+                goto again;
             case 17:
+                printf("请输入你要替换的链串：");
+                getchar();
+                CreateLinkString(&linkString1);
                 // 17、链串的替换
-                printf("请输入要替换的链串：");
+                printf("请输入要去替换链串：");
                 getchar();
                 CreateLinkString(&linkString3);
                 printf("请输入要替换链串1子串的位置和长度：");
                 scanf("%d %d", &start, &length);
-                ReplaceLinkString(linkString1,start, length,linkString3);
+                ReplaceLinkString(linkString1, start, length, linkString3);
                 printf("链串1已替换！替换后的链串为：");
                 // 打印链串
                 PrintLinkString(linkString1);
                 getchar();
+                goto again;
                 break;
             case 18:
                 // 18、链串的插入
@@ -1037,6 +1041,20 @@ int main() {
             default:
                 printf("输入有误，请重新输入！\n");
                 break;
+        }
+        again:
+        printf("是否继续？（Y/N）");
+        scanf("%c", &choice);
+        if (choice == 'Y' || choice == 'y') {
+            continue;
+        } else if (choice == 'N' || choice == 'n') {
+            printf("欢迎下次再使用本系统！\n");
+            Exit();
+            getchar();
+            break;
+        } else {
+            printf("输入有误，请重新输入！\n");
+            goto again;
         }
     }
 
